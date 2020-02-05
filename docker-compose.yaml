@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  ws-demon:
+    image: ws-demon
+
+  morphey:
+    image: morphey
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"

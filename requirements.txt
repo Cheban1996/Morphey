@@ -1,0 +1,10 @@
+aiohttp
+aiohttp-swagger
+uvloop
+aioredis
+marshmallow
+websockets
+httptools
+aio-pika
+ccxt
+yarl==1.1.0
