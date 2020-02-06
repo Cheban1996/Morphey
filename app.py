@@ -59,6 +59,7 @@ class View(web.View):
     async def delete(self):
         pass
 
+
 def client_routes(app):
     app.router.add_view('/', View)
     app.router.add_get('/ws', websocket_handler)
