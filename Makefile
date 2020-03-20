@@ -1,10 +1,16 @@
 APP_NAME = morphey
 
 run:
-	PYTHONASYNCIODEBUG=1 python app.py
+	PYTHONPATH="$(PWD)"
+	PYTHONASYNCIODEBUG=1
+	python morphey/app.py
+
+run-ui:
+	npm run --prefix ui-trade-morphey/ serve
 
 run-ws:
-	PYTHONASYNCIODEBUG=1 python ws-demon.py
+	PYTHONASYNCIODEBUG=1
+	python morphey/ws-demon.py
 
 build:
 	@docker-compose build
@@ -29,3 +35,6 @@ up-redis:
 
 stop:
 	@docker-compose stop
+
+test:
+	pytest tests --verbose -s -vv
