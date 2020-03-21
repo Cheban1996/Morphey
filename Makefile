@@ -5,9 +5,6 @@ run:
 	PYTHONASYNCIODEBUG=1
 	python morphey/app.py
 
-run-ui:
-	npm run --prefix ui-trade-morphey/ serve
-
 run-ws:
 	PYTHONASYNCIODEBUG=1
 	python morphey/ws-demon.py
@@ -38,3 +35,11 @@ stop:
 
 test:
 	pytest tests --verbose -s -vv
+
+ui-run:
+	npm run --prefix ui-morphey/ serve
+
+ui-build:
+	rm -rf ui-morphey/dist
+	npm run --prefix ui-morphey/ build
+	http-server ui-morphey/dist/

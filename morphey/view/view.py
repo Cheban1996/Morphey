@@ -30,7 +30,6 @@ async def websocket_handler(request):
                 while True:
                     data = await request.app['redis'].hgetall('KLINE')
                     data = {key.decode(): json.loads(value) for key, value in data.items()}
-                    print(data)
                     await ws.send_json(data)
                     await asyncio.sleep(1)
         elif msg.type == WSMsgType.ERROR:

@@ -64,7 +64,6 @@ class WS:
                                    "h": payload['k']['h'],
                                    "l": payload['k']['l']})
                 await app.redis.hset('KLINE', symbol, data)
-                print(symbol, data)
 
     @staticmethod
     async def balance(url):
@@ -84,10 +83,12 @@ async def worker(session, timeout=5):
         await asyncio.sleep(timeout)
         new_urls = await RedisStore.symbols()
         if urls != new_urls:
+            print('..Reload worker')
             await worker(session)
 
 
 async def main():
+    print('Start WS-DEMON...')
     await app.setup()
 
     async with aiohttp.ClientSession() as session:

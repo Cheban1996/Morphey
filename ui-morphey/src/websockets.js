@@ -1,3 +1,5 @@
+import store from './store'
+
 let socket = new WebSocket("ws://0.0.0.0:5000/ws");
 
 console.log('Start listen websocket');
@@ -8,8 +10,7 @@ socket.onopen = function (e) {
 };
 
 socket.onmessage = function (event) {
-    console.log(`Data from server: ${event.data}`)
-
+    store.commit('loadKlines', JSON.parse(event.data));
 };
 
 socket.onclose = function (event) {
