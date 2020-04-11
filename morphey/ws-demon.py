@@ -17,6 +17,9 @@ class App:
         port = os.getenv('REDIS_PORT', '6379')
         self.redis = await aioredis.create_redis_pool(f"redis://{host}:{port}")
 
+    async def setup_data(self):
+        self.redis.hset('active_symbols', 'btcusdt', '1m')
+
     async def __aexit__(self, exc_type, exc_val, exc_tb):
         self.redis.close()
         await self.redis.wait_closed()
@@ -26,10 +29,13 @@ class RedisStore:
 
     @staticmethod
     async def symbols():
-        template = lambda ticker, candle_size: \
-            f"wss://stream.binance.com/stream?streams={ticker.decode()}@kline_{candle_size.decode()}"
+        def template(ticker, candle_size):
+            return (f"wss://stream.binance.com/stream?"
+                    f"streams={ticker.decode()}@kline_{candle_size.decode()}")
+
         urls = await app.redis.hgetall('active_symbols')
-        return [template(ticker, candle_size) for ticker, candle_size in urls.items()]
+        return [template(ticker, candle_size)
+                for ticker, candle_size in urls.items()]
 
 
 class CCXT(RedisStore):
@@ -64,6 +70,7 @@ class WS:
                                    "h": payload['k']['h'],
                                    "l": payload['k']['l']})
                 await app.redis.hset('KLINE', symbol, data)
+                print(symbol, data)
 
     @staticmethod
     async def balance(url):
@@ -83,7 +90,7 @@ async def worker(session, timeout=5):
         await asyncio.sleep(timeout)
         new_urls = await RedisStore.symbols()
         if urls != new_urls:
-            print('..Reload worker')
+            print('..Reload WS Worker')
             await worker(session)
 
 

@@ -13,7 +13,6 @@
 </template>
 
 <script>
-    import api from "../apiMorphey";
 
     export default {
         name: "Home",
@@ -24,7 +23,7 @@
             };
         },
         async mounted() {
-            this.symbols = await api.getSymbols();
+            this.symbols = await this.api.getSymbols();
         },
         computed: {
             klines() {
@@ -33,10 +32,10 @@
         }
     };
 </script>
-<!--<style scoped lang="less">-->
-<!--    div .v-select {-->
-<!--        margin-right: 5px;-->
-<!--        width: 350px;-->
-<!--        display: inline-block;-->
-<!--    }-->
-<!--</style>-->
+<style scoped lang="less">
+    div .v-select {
+        margin-right: 5px;
+        width: 350px;
+        display: inline-block;
+    }
+</style>

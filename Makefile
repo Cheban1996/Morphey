@@ -9,6 +9,9 @@ run-ws:
 	PYTHONASYNCIODEBUG=1
 	python morphey/ws-demon.py
 
+run-worker-jobs:
+	arq morphey/worker-jobs.WorkerSettings
+
 build:
 	@docker-compose build
 
@@ -34,7 +37,7 @@ stop:
 	@docker-compose stop
 
 test:
-	pytest tests --verbose -s -vv
+	pytest tests --verbose -s -vv --disable-warnings -k "${k}"
 
 ui-run:
 	npm run --prefix ui-morphey/ serve

@@ -3,20 +3,25 @@ import json
 from datetime import datetime
 
 from aiohttp import (web, WSMsgType)
-
+import marshmallow
 from morphey.schemas.user import SchemaUser
+from morphey.models.user import User
 
 
 async def sign_in(request):
     data = SchemaUser().load(await request.json())
-    # print(data)
-    # print(request.app.__dict__)
-    print(await request.app['redis'].get('symbols'))
-    return web.json_response({'data': 'ok'})
+    await request.app['redis'].set('symbols', 'XX1')
+    return web.json_response(data)
 
 
 async def sign_up(request):
-    return web.json_response({'data': 'ok'})
+    try:
+        body = await request.json()
+        credential: dict = SchemaUser().load(body)
+        data = await User().create_user(credential)
+        return web.json_response({'data': data})
+    except marshmallow.exceptions.ValidationError as e:
+        return e.normalized_messages()
 
 
 async def websocket_handler(request):

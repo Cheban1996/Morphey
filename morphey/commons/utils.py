@@ -1,10 +1,11 @@
 from morphey.models.exchange import Exchange
+from morphey.services.exchange import ServiceExchange
 import aioredis
 from aioredis import Redis
 import json
 
 
-async def initialize_application(app):
+async def setup_data(app):
     """
     This function set data for correct work Morphey application
     1. set in redis market
@@ -12,8 +13,8 @@ async def initialize_application(app):
     """
 
     redis: Redis = app['redis']
-    exchange = Exchange()
-    markets, symbols = await exchange.get_markets()
+    exchange = ServiceExchange()
+    markets, symbols = await exchange.fetch_markets()
     await redis.set('market', json.dumps(markets))
     await redis.set('symbols', json.dumps(symbols))
 

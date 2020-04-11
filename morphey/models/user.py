@@ -1,6 +1,7 @@
 from morphey.models.base import BaseDBMorphey
 from morphey.schemas.user import SchemaUser
 import marshmallow
+from pymongo.errors import PyMongoError
 
 
 class User(BaseDBMorphey):
@@ -9,12 +10,19 @@ class User(BaseDBMorphey):
         super().__init__()
         self.collection = self.db['users']
 
-    async def create_user(self, **kwargs):
+    async def create_user(self, data: dict):
         try:
-            await self.collection.insert_one(SchemaUser().load(kwargs))
+            x = await self.collection.insert_one(data)
+            print(x.inserted_id)
             return 'ok'
-        except marshmallow.exceptions.ValidationError as e:
-            return e.normalized_messages()
+        except PyMongoError as e:
+            # TODO need log
+            print(e)
+            return {'error': 'Please repeat later'}
+        except BaseException as e:
+            # TODO need log
+            print(e)
+            return {'error': 'Please repeat later'}
 
     @staticmethod
     async def get_users():

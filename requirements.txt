@@ -3,17 +3,17 @@ aiohttp-swagger
 uvloop
 aioredis
 marshmallow
-websockets
 httptools
 aio-pika
 ccxt
 yarl==1.1.0
 motor
 aiohttp_cors
+asyncpg
+arq
 
 
 #test
 mock
 pytest
-pytest-asyncio
 pytest-aiohttp

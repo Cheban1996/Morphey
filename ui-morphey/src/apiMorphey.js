@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const hostname = '127.0.0.1';
+const hostname = '0.0.0.0';
 const port = 5000;
 // let host = process.env.NODE_ENV === 'production' ? window.location.host : `${hostname}:${port}`;
 let host = `${hostname}:${port}`;
