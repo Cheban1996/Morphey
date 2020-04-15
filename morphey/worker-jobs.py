@@ -10,10 +10,8 @@ port = os.getenv('REDIS_PORT', '6379')
 async def start_bot(ctx, symbol):
     while True:
         data = await ctx['redis'].hget('KLINE', symbol.upper())
-        # if not data:
-        #     print(f'Not Found symbol: {symbol}')
-        #     raise BaseException(f'Not Found symbol: {symbol}')
-        balance = 0.032
+        if not data:
+            raise BaseException(f'Not Found symbol: {symbol}')
         print(symbol, data)
         await asyncio.sleep(0.5)
 
