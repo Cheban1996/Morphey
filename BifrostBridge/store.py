@@ -3,13 +3,16 @@ from typing import List
 
 import aioredis
 
+REDIS_URL = os.getenv('REDIS_URL', 'redis://127.0.0.1:6379')
+
+print(REDIS_URL)
+
 
 class RedisStore:
     redis: aioredis
 
     async def setup(self):
-        redis_url = os.getenv('REDIS_URL', 'redis://127.0.0.1:6379')
-        self.redis = await aioredis.create_redis_pool(f"redis://{redis_url}")
+        self.redis = await aioredis.create_redis_pool(REDIS_URL)
         await self.setup_data()
 
     async def get_symbols(self) -> List[str]:

@@ -17,7 +17,7 @@ migrations:
 	@docker-compose run $(APP_NAME) alembic revision --autogenerate -m "${name}"
 
 migrate:
-	@docker-compose un $(APP_NAME) alembic upgrade head
+	@docker-compose run $(APP_NAME) alembic upgrade head
 
 clean: stop
 	@docker-compose down --remove-orphans -v

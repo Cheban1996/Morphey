@@ -2,30 +2,32 @@ version: '3.7'
 
 services:
 
-  bifrost-bridge:
-    image: bifrost-bridge
+  bifrost_bridge:
+    image: bifrost_bridge
     build:
-      context: ./BifrostBridge
+      context: BifrostBridge
       dockerfile: Dockerfile
-    environment:
-      - REDIS_URL=redis
+    volumes:
+    - ./BifrostBridge:/bifrost-bridge
     depends_on:
       - redis
+    env_file:
+      - .env
 
   morphey:
     image: morphey
     build:
-      context: ./Morphey
+      context: Morphey
       dockerfile: Dockerfile
     command: "uvicorn morphey.main:app --host 0.0.0.0 --port 8000 --reload"
     volumes:
       - ./Morphey:/morphey
-    environment:
-      - REDIS_URL=redis
     ports:
       - "8000:8000"
     depends_on:
       - redis
+    env_file:
+      - .env
 
   morphey_db:
     image: postgres:12
@@ -37,6 +39,8 @@ services:
       - ./Morphey/init_db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
     ports:
       - "5432:5432"
+    env_file:
+      - .env
 
 
   redis:
