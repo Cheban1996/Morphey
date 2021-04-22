@@ -8,9 +8,8 @@ class RedisStore:
     redis: aioredis
 
     async def setup(self):
-        host = os.getenv('REDIS_URL', '127.0.0.1')
-        port = os.getenv('REDIS_PORT', '6379')
-        self.redis = await aioredis.create_redis_pool(f"redis://{host}:{port}")
+        redis_url = os.getenv('REDIS_URL', 'redis://127.0.0.1:6379')
+        self.redis = await aioredis.create_redis_pool(f"redis://{redis_url}")
         await self.setup_data()
 
     async def get_symbols(self) -> List[str]:

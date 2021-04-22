@@ -1,0 +1,32 @@
+{
+  "name": "trade-morphey",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "register-service-worker": "^1.6.2",
+    "vue": "^2.6.11",
+    "vue-morris": "^1.1.0",
+    "vue-router": "^3.1.5",
+    "vue-select": "^3.6.0",
+    "vuex": "^3.1.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-pwa": "~4.2.0",
+    "@vue/cli-plugin-router": "~4.2.0",
+    "@vue/cli-plugin-vuex": "~4.2.0",
+    "@vue/cli-service": "~4.2.0",
+    "vue-template-compiler": "^2.6.11",
+    "http-server": "^0.12.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
+}

@@ -1,0 +1,15 @@
+uvloop
+aioredis
+marshmallow
+ccxt
+asyncpg
+arq
+starlette
+pydantic
+uvicorn
+
+
+#test
+mock
+pytest
+coverage

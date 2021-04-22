@@ -6,7 +6,6 @@ import os
 import aiohttp
 import uvloop
 
-from model import bifrost_bridge
 from store import RedisStore
 from app import App
 from schemas import StreamKlineSchema
@@ -39,7 +38,6 @@ async def listen_ws(url, session):
                 data = StreamKlineSchema.parse_obj(data)
                 print(data.dict())
                 await redis.update_price_ticker(data.s, data.json())
-                # await bifrost_bridge.create(data.dict())
             except BaseException as e:
                 print(e)
 

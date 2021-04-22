@@ -1,48 +1,30 @@
 APP_NAME = morphey
 
 run:
-	PYTHONPATH="$(PWD)"
-	PYTHONASYNCIODEBUG=1
-	python morphey/app.py
-
-run-ws:
-	PYTHONASYNCIODEBUG=1
-	python morphey/ws-demon.py
-
-run-worker-jobs:
-	arq morphey/worker-jobs.WorkerSettings
+	@docker-compose up
 
 build:
 	@docker-compose build
 
-build-ws-demon:
-	@docker-compose build ws-demon  # docker build -t ws-demon -f ws-demon.Dockerfile .
-
-build-morphey:
-	@docker-compose build morphey  # docker build -t morphey -f morphey.Dockerfile .
-
-up:
-	@docker-compose up -d
-
-up-ws-demon:
-	@docker-compose up ws-demon
-
-up-morphey:
-	@docker-compose up morphey
-
-up-redis:
-	@docker-compose up redis
-
 stop:
 	@docker-compose stop
 
+bash:
+	@docker exec -it $(APP_NAME) bash
+
+# Create migrations: make migrations name="add_user"
+migrations:
+	@docker-compose run $(APP_NAME) alembic revision --autogenerate -m "${name}"
+
+migrate:
+	@docker-compose un $(APP_NAME) alembic upgrade head
+
+clean: stop
+	@docker-compose down --remove-orphans -v
+
+# Testing
 test:
-	pytest tests --verbose -s -vv --disable-warnings -k "${k}"
+	@docker-compose -f $(dev_docker_compose) run $(APP_NAME) pytest tests --verbose -vv -s -W ignore::DeprecationWarning -k "${name}"
 
-ui-run:
-	npm run --prefix ui-morphey/ serve
-
-ui-build:
-	rm -rf ui-morphey/dist
-	npm run --prefix ui-morphey/ build
-	http-server ui-morphey/dist/
+cov:
+	@docker-compose -f $(dev_docker_compose) run $(APP_NAME)
